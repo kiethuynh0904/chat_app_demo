@@ -1,4 +1,5 @@
-import React, {useState} from 'react';
+/* eslint-disable react-hooks/exhaustive-deps */
+import React, {useState, useEffect, useContext} from 'react';
 
 import {
   View,
@@ -11,33 +12,55 @@ import {
 import {Colors} from '../../constants';
 import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import {sendMessage} from '../../app/slices/planetRoomSlice';
+import {sendMessage, sendGroupMessage} from '../../app/slices/planetRoomSlice';
 import {useAppDispatch} from '../../app/hook';
 import {IMessage} from '../../models/message';
+import {SocketContext} from '../../context/socketContext';
+import {Socket} from 'socket.io-client';
+import {useArrivalMessage} from '../../hooks/useArrivalMessage';
+import {PLANET_ROOM} from '../../screens/MilkyWay';
 
 type User = {
   name: string;
   id: string;
 };
 
-const MessageInput = ({user}: {user: User}) => {
+const MessageInput = ({
+  user,
+  subscribe = false,
+}: {
+  user: User;
+  subscribe?: boolean;
+}) => {
   const dispatch = useAppDispatch();
   const [msg, setMsg] = useState('');
+  const socket: Socket = useContext(SocketContext);
+  const {arrivalMsg} = useArrivalMessage(socket);
+
+  // console.log('arrivalMsg', arrivalMsg);
 
   const onSendMessage = () => {
     let uniqueId =
       Date.now().toString(36) + Math.random().toString(36).substring(2);
-    const timeElapsed = Date.now();
-
     let message: IMessage = {
       id: uniqueId,
       content: msg,
-      createdAt: timeElapsed,
+      createdAt: Date.now(),
       user,
     };
     setMsg('');
-    dispatch(sendMessage(message));
+    if (subscribe) {
+      socket?.emit('sendMessage', {msg: message, room: PLANET_ROOM});
+    } else {
+      dispatch(sendMessage(message));
+    }
   };
+
+  useEffect(() => {
+    if (subscribe && arrivalMsg) {
+      dispatch(sendGroupMessage(arrivalMsg));
+    }
+  }, [arrivalMsg]);
 
   return (
     <KeyboardAvoidingView

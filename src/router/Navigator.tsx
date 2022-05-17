@@ -6,14 +6,25 @@ import {
 } from '@react-navigation/native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 
-import {MarsScreen, EarthScreen} from './routes';
+import {MarsScreen, EarthScreen, AuthScreen, MilkyWayScreen} from './routes';
 import {useWindowDimensions, View, Text, Image} from 'react-native';
+import {createStackNavigator} from '@react-navigation/stack';
 
 const EarthAvatar =
   'https://static.wikia.nocookie.net/avatar/images/5/59/Planet_Earth.png/revision/latest/scale-to-width-down/444?cb=20140920231628';
 
 const MarsAvatar =
   'https://i.pinimg.com/564x/ef/03/75/ef037565fab4531b56706172f5111038.jpg';
+
+const Stack = createStackNavigator();
+function AuthStack() {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen name="Auth" component={AuthScreen} />
+      <Stack.Screen name="MilkyWay" component={MilkyWayScreen} />
+    </Stack.Navigator>
+  );
+}
 
 const Tab = createBottomTabNavigator();
 
@@ -40,6 +51,14 @@ export default function Navigation({isDarkMode}: {isDarkMode: boolean}) {
           }}
           name="Mars"
           component={MarsScreen}
+        />
+        <Tab.Screen
+          options={{
+            tabBarIcon: () => null,
+            headerShown: false,
+          }}
+          name="User"
+          component={AuthStack}
         />
       </Tab.Navigator>
     </NavigationContainer>
