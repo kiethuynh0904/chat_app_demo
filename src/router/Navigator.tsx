@@ -9,6 +9,7 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {MarsScreen, EarthScreen, AuthScreen, MilkyWayScreen} from './routes';
 import {useWindowDimensions, View, Text, Image} from 'react-native';
 import {createStackNavigator} from '@react-navigation/stack';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
 const EarthAvatar =
   'https://static.wikia.nocookie.net/avatar/images/5/59/Planet_Earth.png/revision/latest/scale-to-width-down/444?cb=20140920231628';
@@ -31,7 +32,25 @@ const Tab = createBottomTabNavigator();
 export default function Navigation({isDarkMode}: {isDarkMode: boolean}) {
   return (
     <NavigationContainer theme={isDarkMode ? DarkTheme : DefaultTheme}>
-      <Tab.Navigator>
+      <Tab.Navigator
+        screenOptions={({route}) => ({
+          tabBarIcon: ({focused, color, size}) => {
+            let iconName = '';
+
+            if (route.name === 'Earth') {
+              iconName = 'earth';
+            } else if (route.name === 'Mars') {
+              iconName = 'planet';
+            } else if (route.name === 'User') {
+              iconName = 'person';
+            }
+
+            // You can return any component that you like here!
+            return <Ionicons name={iconName} size={size} color={color} />;
+          },
+          tabBarActiveTintColor: 'tomato',
+          tabBarInactiveTintColor: 'gray',
+        })}>
         <Tab.Screen
           name="Earth"
           component={EarthScreen}
@@ -39,12 +58,10 @@ export default function Navigation({isDarkMode}: {isDarkMode: boolean}) {
             headerTitle: props => (
               <PlanetRoomHeader {...props} uri={EarthAvatar} />
             ),
-            tabBarIcon: () => null,
           }}
         />
         <Tab.Screen
           options={{
-            tabBarIcon: () => null,
             headerTitle: props => (
               <PlanetRoomHeader {...props} uri={MarsAvatar} />
             ),
@@ -54,7 +71,6 @@ export default function Navigation({isDarkMode}: {isDarkMode: boolean}) {
         />
         <Tab.Screen
           options={{
-            tabBarIcon: () => null,
             headerShown: false,
           }}
           name="User"

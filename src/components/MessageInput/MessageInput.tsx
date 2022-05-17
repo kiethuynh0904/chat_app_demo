@@ -77,7 +77,10 @@ const MessageInput = ({
           style={styles.input}
         />
       </View>
-      <Pressable onPress={onSendMessage} style={styles.buttonContainer}>
+      <Pressable
+        testID="sendMessageBtn"
+        onPress={onSendMessage}
+        style={styles.buttonContainer}>
         <Ionicons name="ios-send" size={18} color={Colors.white} />
       </Pressable>
     </KeyboardAvoidingView>
