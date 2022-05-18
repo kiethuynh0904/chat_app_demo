@@ -1,11 +1,11 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, {useContext, useEffect, useState} from 'react';
-import {View, StyleSheet, FlatList, Alert} from 'react-native';
+import React, {useContext, useEffect} from 'react';
+import {View, StyleSheet, FlatList} from 'react-native';
 
 import {RouteProp, useRoute} from '@react-navigation/native';
 
 import {Message, MessageInput} from '../components';
-import {useAppDispatch, useAppSelector} from '../app/hook';
+import {useAppSelector} from '../app/hook';
 import {selectGroupMessage} from '../app/slices/planetRoomSlice';
 
 import {Colors} from '../constants';
@@ -46,6 +46,7 @@ function MilkyWayScreen() {
         renderItem={({item}) => <Message user={user} message={item} />}
         inverted
         keyExtractor={item => item.id.toString()}
+        testID="messageList"
       />
       <MessageInput subscribe user={user} />
     </View>

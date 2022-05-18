@@ -4,17 +4,14 @@ import {MessageInput} from '../../../src/components/';
 import {store} from '../../../src/app/store';
 import {Provider} from 'react-redux';
 import {SocketProvider} from '../../../src/context/socketContext';
-import {useAppDispatch} from '../../../src/app/hook';
 
-describe('Testing earth screen', () => {
+describe('Testing message input component', () => {
   let user = {
     name: 'Test',
     id: 'test',
   };
 
-  test('MessageInput without subscribe', () => {
-    let dispatch = jest.fn();
-
+  test('message input snapshot', () => {
     const component = render(
       <Provider store={store}>
         <SocketProvider>
@@ -22,9 +19,50 @@ describe('Testing earth screen', () => {
         </SocketProvider>
       </Provider>,
     );
-    const sendMessageBtn = component.getByTestId('sendMessageBtn');
 
-    fireEvent.press(sendMessageBtn);
-    // expect(dispatch).toBeCalledWith(expect.any);
+    expect(component).toMatchSnapshot();
+  });
+
+  test('message input should be empty', () => {
+    const component = render(
+      <Provider store={store}>
+        <SocketProvider>
+          <MessageInput user={user} />
+        </SocketProvider>
+      </Provider>,
+    );
+    const messageInp = component.getByPlaceholderText('Aa') as any;
+    expect(messageInp.props.value).toBe('');
+  });
+
+  test('message input should be changed', () => {
+    const component = render(
+      <Provider store={store}>
+        <SocketProvider>
+          <MessageInput user={user} />
+        </SocketProvider>
+      </Provider>,
+    );
+    const messageInp = component.getByPlaceholderText('Aa') as any;
+    fireEvent.changeText(messageInp, 'hello world');
+    expect(messageInp.props.value).toBe('hello world');
+  });
+
+  test('message input should be clear text when submit', () => {
+    const component = render(
+      <Provider store={store}>
+        <SocketProvider>
+          <MessageInput user={user} />
+        </SocketProvider>
+      </Provider>,
+    );
+
+    const sendMsgBtn = component.getByTestId('sendMessageBtn');
+    const messageInp = component.getByPlaceholderText('Aa') as any;
+
+    fireEvent.changeText(messageInp, 'hello world');
+    fireEvent.press(sendMsgBtn);
+
+    expect(messageInp.props.value).toBe('');
   });
 });

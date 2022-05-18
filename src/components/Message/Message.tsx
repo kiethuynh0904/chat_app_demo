@@ -12,7 +12,7 @@ type User = {
 const Message = ({message, user}: {message: IMessage; user: User}) => {
   const isMe = message.user.id === user.id;
   const [showCreatedTime, setShowCreatedTime] = useState(false);
-  const translateY = useRef(new Animated.Value(5)).current;
+  const translateY = useRef(new Animated.Value(8)).current;
 
   useEffect(() => {}, []);
 
@@ -20,7 +20,7 @@ const Message = ({message, user}: {message: IMessage; user: User}) => {
     setShowCreatedTime((oldState: boolean) => {
       if (oldState) {
         Animated.timing(translateY, {
-          toValue: 5,
+          toValue: 8,
           duration: 200,
           useNativeDriver: false,
           easing: Easing.linear,
@@ -38,7 +38,7 @@ const Message = ({message, user}: {message: IMessage; user: User}) => {
 
   return (
     <>
-      <View style={{flexDirection: 'row'}}>
+      <View style={{flexDirection: 'row', flex: 1}}>
         {!isMe && (
           <View style={styles.avatarContainer}>
             <Text style={styles.avatarText}>
@@ -47,15 +47,21 @@ const Message = ({message, user}: {message: IMessage; user: User}) => {
           </View>
         )}
         <Pressable
+          testID="messageBtn"
           onPress={onPressMessage}
           style={[
             styles.container,
             isMe ? styles.bubbleRight : styles.bubbleLeft,
           ]}>
-          <Text
-            style={[styles.text, {color: isMe ? Colors.white : Colors.black}]}>
-            {message.content}
-          </Text>
+          <View style={{flexDirection: 'row'}}>
+            <Text
+              style={[
+                styles.text,
+                {color: isMe ? Colors.white : Colors.black},
+              ]}>
+              {message.content}
+            </Text>
+          </View>
         </Pressable>
       </View>
 
@@ -78,6 +84,7 @@ const styles = StyleSheet.create({
     margin: 10,
     borderRadius: 20,
     maxWidth: '60%',
+    position: 'relative',
   },
   bubbleLeft: {
     backgroundColor: Colors.lightGrey,

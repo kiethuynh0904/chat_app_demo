@@ -1,5 +1,5 @@
 import {createAsyncThunk, createSlice, PayloadAction} from '@reduxjs/toolkit';
-import {RootState, AppThunk} from '../../app/store';
+import {RootState} from '../../app/store';
 import {IMessage} from '../../models/message';
 import {fetchMessage} from './planetRoomAPI';
 
@@ -57,7 +57,8 @@ export const planetRoomSlice = createSlice({
   },
 });
 
-export const {sendMessage, sendGroupMessage} = planetRoomSlice.actions;
+export const {sendMessage, sendGroupMessage, interactionWithHeart} =
+  planetRoomSlice.actions;
 
 // The function below is called a selector and allows us to select a value from
 // the state. Selectors can also be defined inline where they're used instead of

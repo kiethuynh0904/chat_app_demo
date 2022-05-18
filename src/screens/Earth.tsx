@@ -25,7 +25,7 @@ function EarthScreen() {
   if (status === 'loading') {
     return (
       <View style={{flex: 1}}>
-        <ActivityIndicator />
+        <ActivityIndicator testID="loading" />
       </View>
     );
   }
@@ -33,6 +33,7 @@ function EarthScreen() {
   return (
     <View style={styles.container}>
       <FlatList
+        testID="messageList"
         data={message}
         renderItem={({item}) => <Message user={EARTH} message={item} />}
         inverted
