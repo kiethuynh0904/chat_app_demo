@@ -5,7 +5,7 @@
 #### you need to go `src/contex/socketContext.tsx` to change your ip for connect server
 
 then use this command to run socket server: 
-### `node index.js`
+### `cd server && node index.js`
 
 
 ## Available Scripts
