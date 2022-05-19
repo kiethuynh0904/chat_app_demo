@@ -1,5 +1,9 @@
 apply plugin: "com.android.application"
 
+
+
+apply from: project(':react-native-config').projectDir.getPath() + "/dotenv.gradle"
+
 import com.android.build.OutputFile
 import org.apache.tools.ant.taskdefs.condition.Os
 
@@ -139,6 +143,8 @@ android {
 
     compileSdkVersion rootProject.ext.compileSdkVersion
 
+    flavorDimensions "default"
+    
     defaultConfig {
         applicationId "com.chat_app_demo"
         minSdkVersion rootProject.ext.minSdkVersion
@@ -238,6 +244,7 @@ android {
     buildTypes {
         debug {
             signingConfig signingConfigs.debug
+            matchingFallbacks = ['debug', 'release']
         }
         release {
             // Caution! In production, you need to generate your own keystore file.
