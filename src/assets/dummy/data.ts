@@ -2,7 +2,7 @@ export default {
   messages: [
     {
       id: 'm1',
-      content: 'Hello Mars, now I can see you!',
+      content: 'Hi Mars! finally, I can see you!',
       createdAt: 1652677931771,
       user: {
         id: 'earth',
@@ -11,7 +11,7 @@ export default {
     },
     {
       id: 'm2',
-      content: 'Oh! hi Earth, where are you from ?',
+      content: 'Oh! where are you from ?',
       createdAt: 1652677941993,
       user: {
         id: 'mars',
